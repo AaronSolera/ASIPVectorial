@@ -88,12 +88,13 @@ module MEMORY_8BIT (
 	defparam
 		altsyncram_component.clock_enable_input_a = "BYPASS",
 		altsyncram_component.clock_enable_output_a = "BYPASS",
+/*
 `ifdef NO_PLI
 		altsyncram_component.init_file = "./ASIVP/MEMORY/MEMORY.rif"
 `else
 		altsyncram_component.init_file = "./ASIVP/MEMORY/MEMORY.hex"
 `endif
-,
+,*/
 		altsyncram_component.intended_device_family = "Cyclone V",
 		altsyncram_component.lpm_type = "altsyncram",
 		altsyncram_component.numwords_a = 327712,

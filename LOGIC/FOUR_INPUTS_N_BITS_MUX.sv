@@ -1,4 +1,4 @@
-module FOUR_INPUTS_N_BITS_MUX #(parameter BITS) (IN0, IN1, IN2, IN3, S, OUT);
+module FOUR_INPUTS_N_BITS_MUX #(parameter BITS = 8) (IN0, IN1, IN2, IN3, S, OUT);
 
 	input [BITS-1:0] IN0, IN1, IN2, IN3; // Inputs
 	input [1:0] S;								 // Select
