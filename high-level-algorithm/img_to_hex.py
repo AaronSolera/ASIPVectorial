@@ -42,11 +42,10 @@ current_byte = 0
 #----------------------------------------------------------------------------------------------
 for row in range(img.size[0]):
     for column in range(img.size[1]):
-        if current_byte < bytes_in_data:
-            data_field = data_field + f'{pix[column,row]:0>2X}'
-            current_byte += 1
-        else:
-            content = f'{bytes_in_data:0>2X}' + f'{starting_address:0>4X}' + line_type + data_field
+        data_field = data_field + f'{pix[column,row]:0>2X}'
+        current_byte += 1
+        if current_byte == bytes_in_data:
+            content = f'{bytes_in_data:0>2X}' + f'{starting_address:0>4X}'[-4:] + line_type + data_field
             hex_file.write(':' + content + checksum(content) + '\n')
             data_field = ''
             current_byte = 0
@@ -56,9 +55,10 @@ for row in range(img.size[0]):
 #----------------------------------------------------------------------------------------------
 data_field = '00' * bytes_in_data
 
-for address in range(starting_address, number_of_words + 1):
-    content = f'{bytes_in_data:0>2X}' + f'{address:0>4X}' + line_type + data_field
+for address in range(starting_address, number_of_words):
+    content = f'{bytes_in_data:0>2X}' + f'{address:0>4X}'[-4:] + line_type + data_field
     hex_file.write(':' + content + checksum(content) + '\n')
+
 #----------------------------------------------------------------------------------------------
 #   Inserting end of file delimiter to complete convertion
 #----------------------------------------------------------------------------------------------
@@ -66,7 +66,7 @@ line_type = '01'
 bytes_in_data = 0
 starting_address = 0
 
-content = f'{bytes_in_data:0>2X}' + f'{starting_address:0>4X}' + line_type
+content = f'{bytes_in_data:0>2X}' + f'{starting_address:0>4X}'[-4:] + line_type
 hex_file.write(':' + content + checksum(content) + '\n')
 
 print('Image has been converted to hex file successfully')
