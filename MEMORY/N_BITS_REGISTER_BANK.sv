@@ -9,8 +9,8 @@ module N_BITS_REGISTER_BANK #(parameter BITS = 32) (CLK, WE3, A1, A2, A3, WD3, R
 	
 	initial begin
 	
-		REGS[0]  = 32'd65536;
-		REGS[15] = 32'd81928;
+		REGS[0] = 32'd65536;
+		REGS[1] = 32'd81928;
 		
 	end
 	

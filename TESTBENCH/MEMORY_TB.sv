@@ -5,8 +5,7 @@ module MEMORY_TB;
 
 	logic 		 CLK, WE, E, S;
 	logic [1:0]  POS;
-	logic [16:0] A;
-	logic [31:0] WDV, WDS, RD;
+	logic [31:0] A, WDV, WDS, RD;
 	//logic [7:0] WD, RD;
 	
 /*
@@ -50,7 +49,7 @@ module MEMORY_TB;
 		WE  = 1'b0;
 		E   = 1'b0;
 		S   = 1'b0;
-		A   = 17'd0;
+		A   = 32'd0;
 		WDS = 32'd0;
 		WDV = 32'd0;
 		POS = 2'd0;
@@ -94,7 +93,7 @@ module MEMORY_TB;
 		
 		$display ("-----Starting store one element at one positon in  a vector data testing-----");
 		
-		A   = 17'd1;
+		A   = 32'd1;
 		WE  = 1'b1;
 		WDS = 32'hA;
 		WDV = 32'h03020100;

@@ -1,8 +1,7 @@
 module MEMORY (CLK, A, WDV, WDS, POS, WE, E, S, RD);
 
 	input  CLK, WE, E, S;   // Clock, Write enable, Extra, Special
-	input  [16:0] A;			// Address
-	input  [31:0] WDV, WDS; // Write data vector, Write data scalar
+	input  [31:0] A, WDV, WDS; // Address, Write data vector, Write data scalar
 	input  [1:0]  POS; 		// Position
 	output logic [31:0] RD;	// Read data
 	
@@ -12,7 +11,7 @@ module MEMORY (CLK, A, WDV, WDS, POS, WE, E, S, RD);
 	logic  [31:0] W_MUX_WD, W_WD, W_RD, W_MUX_EX0, W_MUX_S;
 	
 	MEMORY_32BIT
-		MEMORY (A, W_WD, WCLK, RCLK, WE, W_RD);
+		MEMORY (A[16:0], W_WD, WCLK, RCLK, WE, W_RD);
 		
 	DECODER_0 
 		DEC0 (POS, W_DEC);

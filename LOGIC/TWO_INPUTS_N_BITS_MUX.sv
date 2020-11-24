@@ -15,4 +15,4 @@ module TWO_INPUTS_N_BITS_MUX #(parameter BITS = 8) (IN0, IN1, S, OUT);
 		
 	end
 	
-endmodule
+endmodule 
