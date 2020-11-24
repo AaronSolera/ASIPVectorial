@@ -42,7 +42,7 @@ current_byte = 0
 #----------------------------------------------------------------------------------------------
 for row in range(img.size[0]):
     for column in range(img.size[1]):
-        data_field = data_field + f'{pix[column,row]:0>2X}'
+        data_field = f'{pix[column,row]:0>2X}' + data_field
         current_byte += 1
         if current_byte == bytes_in_data:
             content = f'{bytes_in_data:0>2X}' + f'{starting_address:0>4X}'[-4:] + line_type + data_field

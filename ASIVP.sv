@@ -1,3 +1,3 @@
-module ASIVP #(parameter bits = 32)();
+module ASIVP ();
 	
 endmodule

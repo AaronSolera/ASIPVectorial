@@ -1,51 +1,98 @@
 #!/usr/bin/env python3
+from PIL import Image
 import numpy as np
 
-VEC_REGS = 4
+def embarrar(pixels: list, direction: str) -> list:
+	output_pixels = list()
+	if (direction == "<"):
+		output_pixels = ([pixels[0]] * 2) + ([pixels[1]] * 2)
+	elif (direction == ">"):
+		output_pixels = ([pixels[2]] * 2) + ([pixels[3]] * 2)
+	return output_pixels
+#
+img_size = 512
+#---------------------------------------------------------
+pixels_total = img_size * img_size
+input_img_name  = "lion.png"
+output_img_name = "lioni.png"
 
-height = 4
-width  = 4
-scale  = 2
-scale2 = scale * scale
-
-image = np.array((([10, 20] * int(width//2)) + 
-	              ([30, 40] * int(width//2))) * int(width//2))
-
+input_img        = Image.open(input_img_name)
+#---------------------------------------------------------
+switch = 6 
+# 
+size  = int(img_size / 4)
+#
+scale = 2
+# 
+quadrant_row = int(switch / 4)
+#
+quadrant_column = switch - ( int(i / 4) * 4 )
+#
+quadrant_size = int(size / 4)
+#---------------------------------------------------------
+#
+image = np.array(list(input_img.getdata()), dtype=np.uint8).reshape((int(pixels_total // 4), 4))
 #Defines the new size of the matrix
-output_width  = width  * scale
-output_height = height * scale
-#Finds the ratio of the new and old size
-column_ratio = output_width  / width
-row_ratio    = output_height / height
+output_size = size * scale
 #Creates the output image
-output_img = np.zeros(output_height * output_width).astype(int)
-#Creates a vector for handle the pixel positions of the output image
-positions = np.arange(0, VEC_REGS)
-
-#Goes through all rows
+output_img = np.array([[0] * 4] * (int(output_size**2 // 4)))
+#
+img_temp = np.array([[0] * 4] * (int(128**2 // 4)))
+#---------------------------------------------------------
+#
 i = 0
-while (i < output_height):
-	#Normalizes the current row-wise pixel position
-	rw_i = int(i // row_ratio)
-	rw_i = rw_i * width
-	#Goes through all columns
-	j = 0
-	column_pos = np.arange(j, j + VEC_REGS)
-	while (j < output_width):
-		#Normalizes the current columns-wise pixels positions
-		cw_j = (column_pos // column_ratio).astype(int)
-		#Computes the interpolation column indices of the current row
-		cw_j = cw_j + rw_i
-		#Gets the pixel values from the input image
-		values = image[cw_j]
-		#Saves the pixels in the output image
-		np.put(output_img, positions, values)
-		#Advances to the next pixel positions in the output image
-		positions = positions + VEC_REGS
-		#Continues to the next columns
-		column_pos = column_pos + VEC_REGS
-		j          = j + VEC_REGS
-	#Continues to the next row
-	i = i + 1
+#
+j = 0
+#
+k = 0
+#
+quadrant_row_offset = (quadrant_row * size) * size
+#
+while j < size - 1: #!!!!!!! Ese menos uno hablarlo con Nacho
+	#
+	while i < quadrant_size:
+		#
+		quadrant_column_offset = (size * j) + (quadrant_column * quadrant_size) + i 
+		#
+		quadrant_offset = quadrant_row_offset + quadrant_column_offset
+		#---------------------------------------------------------
+		img_temp[i + (quadrant_size * j)] = image[quadrant_offset]
+		#---------------------------------------------------------
+		while k < scale:
+			#
+			value = embarrar(image[quadrant_offset], "<")
+			# 
+			offset = (i * 2 + (quadrant_size * 4 * j))
+			#
+			offset = offset + k
+			#
+			output_img[offset] = value 
+			#
+			output_img[(quadrant_size * 2) + offset] = value 
+			#
+			value = embarrar(image[quadrant_offset], ">")
+			#
+			output_img[offset + 1] = value
+			#
+			output_img[(quadrant_size * 2) + offset + 1] = value 
+			#
+			k += 1
+		#
+		k  = 0
+		#
+		i += 1
+	#
+	i = 0
+	#
+	j += 1
+#---------------------------------------------------------
+output_image = Image.new(mode="L", size=(output_size, output_size))
+output_image.putdata(output_img.flatten())
 
-print(output_img.reshape((output_width,output_height)))
+output_image.save(output_img_name)
+
+output_image = Image.new(mode="L", size=(size, size))
+output_image.putdata(img_temp.flatten())
+
+output_image.save("control.png")
+#---------------------------------------------------------

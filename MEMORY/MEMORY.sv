@@ -4,7 +4,7 @@ module MEMORY (CLK, A, WDV, WDS, POS, WE, E, S, RD);
 	input  [16:0] A;			// Address
 	input  [31:0] WDV, WDS; // Write data vector, Write data scalar
 	input  [1:0]  POS; 		// Position
-	output logic [31:0] RD;			// Read data
+	output logic [31:0] RD;	// Read data
 	
 	logic 		  RCLK, WCLK;
 	logic  [3:0]  W_DEC;

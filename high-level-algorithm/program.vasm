@@ -1,0 +1,102 @@
+SWITCH_LOOP:
+	LD  R15, [R1]						; R15.switch = [R1]
+	CMP R15, #15						; R15.switch < 15 ?
+	BLT SWITCH_LOOP
+
+MOV R3, #512							; R3.img_size = 512
+DIV R4, R3, #4							; R4.size = R3.img_size / 4
+MOV R5, #2								; R5.scale = 2
+DIV R6, R15, #4                         ; R6.quadrant_row = R15.switch / 4
+
+DIV R7, R15, #4							; R7.quadrant_column = R15.switch / 4
+MUL R7, R7, #4							; R7.quadrant_column = R7.quadrant_column * 4
+SUB R7, R15, R7 					    ; R7.quadrant_column = R15.switch - R7.quadrant_column
+
+DIV R8, R4, #4                          ; R8.quadrant_size = R4.size / 4
+
+MUL R13, R6, R4							; R13.quadrant_row_offset = R6.quadrant_row * R4.size
+MUL R13, R13, R4						; R13.quadrant_row_offset = R13.quadrant_row_offset * R4.size
+
+ROW_LOOP:
+
+COLUMN_LOOP:
+
+MUL R15, R4, R11						; R15 = R4.size * R11.j  
+MUL R14, R7, R8							; R14.quadrant_column_offset = R7.quadrant_column * R8.quadrant_size 
+ADD R14, R14, R15						; R14.quadrant_column_offset = R14.quadrant_column_offset * R15
+ADD R14, R14, R10						; R14.quadrant_column_offset = R14.quadrant_column_offset * R10.i
+
+ADD R14, R14, R13						; R14.quadrant_offset = R14.quadrant_column_offset + R13.quadrant_row_offset
+
+SCALE_LOOP:
+
+LDV V0, [R14] [>]						; V0.value = embarrar(image[R14.quadrant_offset], "<")
+
+MUL R2, R8, R11							; R2 = R8.quadrant_size * R11.j
+MUL R2, R2, #4							; R2 = R2 * 4
+MUL R15, R10, #2						; R15.offset = R10.i * 2
+ADD R15, R15, R12						; R15.offset = R15.offset + R12.k
+
+ADD R9, R0, R15							; R9 = R0 + R15.offset
+STV V0, [R9]							; [R9] = V0.value 
+
+ADD R9, R0, R15							; R9 = R0 + R15.offset
+MUL R2, R8, #2							; R2 = R8.quadrant_size * 2
+ADD R9, R9, R2 							; R9 = R9 + R2
+STV V0, [R9]							; [R9] = V0.value
+
+LDV V0, [R14] [<]						; V0.value = embarrar(image[R14.quadrant_offset], ">")
+
+ADD R9, R0, R15							; R9 = R0 + R15.offset
+ADD R9, R9, #1							; R9 = R9 + 1
+STV V0, [R9]							; [R9] = V0.value 
+
+ADD R9, R0, R15							; R9 = R0 + R15.offset
+MUL R2, R8, #2							; R2 = R8.quadrant_size * 2
+ADD R9, R9, R2							; R9 = R9 + R2
+ADD R9, R9, #1							; R9 = R9 + 1
+STV V0, [R9]							; [R9] = V0.value
+
+ADD R12, R12, #1						; R12.k = R12.k + 1
+
+CMP R12, R5 							; R12.k < R5.scale ?
+BLT SCALE_LOOP	
+
+MOV R12, #0								; R12.k = 0
+ADD R10, R10, #1						; R10.i = R10.i + 1
+
+CMP R10, R8 							; R10.i < R8.quadrant_size ?
+BLT COLUMN_LOOP
+
+MOV R10, #0								; R10.i = 0
+ADD R11, R11, #1						; R11.j = R11.j + 1
+
+CMP R11, R4 							; R11.j < R4.size ?
+BLT ROW_LOOP
+
+ADD R1, R1, #1
+MOV R2, #256
+MUL R2, R2, R2
+DIV R2, R2, #4
+MOV R3, #0
+
+IMAGE_LOOP:
+
+LD R15, [R0] [0]
+ST R15, [R1]
+LD R15, [R0] [1]
+ST R15, [R1]
+LD R15, [R0] [2]
+ST R15, [R1]
+LD R15, [R0] [3]
+ST R15, [R1]
+
+ADD R0, R0, #1
+ADD R3, R3, #1
+CMP R3, R2
+
+BLT IMAGE_LOOP
+
+EXIT:
+
+B EXIT

@@ -1,0 +1,25 @@
+/*
+module FETCH (CLK, PC_SRC, MEM_TO_REG, WA3_IN, ALU_RESULT, R_UP_IN, READ_DATA, WA3_OUT, R_UP_OUT,INSTRUCTION);
+
+	input         CLK, PC_SRC, MEM_TO_REG, R_UP; 
+	input  [3:0]  WA3;
+	input  [31:0] ALU_RESULT, READ_DATA;
+	output [31:0] INSTRUCTION;
+	
+
+	N_BITS_REGISTER 
+		PC_REG (CLK, CLK, 1'b0, WD, RD),
+		PIPE   (CLK, CLK, 1'b0, WD, INSTRUCTION);
+		
+	INSTRUCTION_MEMORY #("C:/Users/Lenovo/Desktop/ASIVP/ASIVP/binary.hex")
+		INS_MEM (CLK, PC, INSTRUCTION);
+		
+	TWO_INPUTS_N_BITS_MUX #(32) 
+		MEM_MUX (IN0, IN1, S, OUT),
+		PC_MUX  (IN0, IN1, S, OUT);
+		
+	N_BITS_ADDER 
+		PC_ADDER (OP0, OP1, RESULT);
+
+endmodule 
+*/
