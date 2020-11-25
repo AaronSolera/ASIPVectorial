@@ -1,0 +1,10 @@
+ADD_LOOP:
+
+ADD R2, R2, #1
+ST     R2, [R1, #1]
+CMP R2, #10
+
+BLT   ADD_LOOP
+
+EXIT:
+B EXIT

@@ -89,9 +89,9 @@ module MEMORY_32BIT (
 		altsyncram_component.clock_enable_input_a = "BYPASS",
 		altsyncram_component.clock_enable_output_a = "BYPASS",
 `ifdef NO_PLI
-		altsyncram_component.init_file = "./ASIVP/MEMORY/MEMORY.rif"
+		altsyncram_component.init_file = "./simulation/modelsim/MEMORY.rif"
 `else
-		altsyncram_component.init_file = "./ASIVP/MEMORY/MEMORY.hex"
+		altsyncram_component.init_file = "./simulation/modelsim/MEMORY.hex"
 `endif
 ,
 		altsyncram_component.intended_device_family = "Cyclone V",
