@@ -14,11 +14,11 @@ img_size = 512
 #---------------------------------------------------------
 pixels_total = img_size * img_size
 input_img_name  = "lion.png"
-output_img_name = "lioni.png"
+output_img_name = "lion_cn.png"
 
 input_img        = Image.open(input_img_name)
 #---------------------------------------------------------
-switch = 6 
+switch = 5 
 # 
 size  = int(img_size / 4)
 #
@@ -26,7 +26,7 @@ scale = 2
 # 
 quadrant_row = int(switch / 4)
 #
-quadrant_column = switch - ( int(i / 4) * 4 )
+quadrant_column = switch - ( int(switch / 4) * 4 )
 #
 quadrant_size = int(size / 4)
 #---------------------------------------------------------

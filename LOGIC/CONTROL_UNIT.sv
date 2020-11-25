@@ -9,16 +9,16 @@ module CONTROL_UNIT (FUNCT, OP, REG_UPDATE, REG_S_WRITE, REG_V_WRITE, ALU_S_SRC,
 
 	logic        W_REG_UPDATE, W_NO_REG_WRITE;
 	logic  [7:0] CONTROL;
-	
+ 
 	//---------------------------------------------------------------------------------------
 	// Main Decoder
 	//---------------------------------------------------------------------------------------
-
+ 
 	assign W_REG_UPDATE   = ((OP == 2'b01) && FUNCT[4]);
 	assign MEM_S          = ((OP == 2'b01) && FUNCT[2]);
 	assign MEM_E          = ((OP == 2'b01) && FUNCT[1]);
 	assign W_NO_REG_WRITE = ((OP == 2'b00) && (FUNCT[2:0] == 3'b101));
-	assign REG_S_WRITE    = (~(FUNCT[5] || FUNCT[6]) || (OP == 2'b01 && FUNCT[5] || FUNCT[6] && W_REG_UPDATE)) && ~W_NO_REG_WRITE;
+	assign REG_S_WRITE    = (~(FUNCT[5] || FUNCT[6]) || (OP == 2'b01 && (FUNCT[5] || FUNCT[6]) && W_REG_UPDATE)) && ~W_NO_REG_WRITE && ~(OP == 2'b11);
 	assign ALU_S_PASS     = (OP == 2'b00 && FUNCT[2:0] == 3'b100 && ~FUNCT[5]) || (OP == 2'b10);
 	assign ALU_V_PASS     = (OP == 2'b00 && FUNCT[2:0] == 3'b100 &&  FUNCT[5]) || (OP == 2'b01 && FUNCT[3]);
 

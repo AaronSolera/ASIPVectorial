@@ -12,7 +12,7 @@ module ASIVP_TB;
 		
 	initial begin
 		
-		SWITCH = 5'd10;
+		SWITCH = 5'b00000;
 		CLK    = 1'b0;
 	
 	end

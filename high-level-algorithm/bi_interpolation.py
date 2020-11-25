@@ -1,15 +1,20 @@
 #!/usr/bin/env python3
 import numpy as np
+from PIL import Image
 
 VEC_REGS = 4
 
-height = 4
-width  = 4
+height = 512
+width  = 512
 scale  = 2
 scale2 = scale * scale
 
-image = np.array((([10, 20] * int(width//2)) + 
-	              ([30, 40] * int(width//2))) * int(width//2))
+input_img_name  = "lion.png"
+output_img_name = "lion_bi.png"
+
+input_img        = Image.open(input_img_name)
+
+image = np.array(list(input_img.getdata()), dtype=np.uint8)
 
 #Defines the new size of the matrix
 output_width  = width  * scale
@@ -62,8 +67,8 @@ while (i < output_height):
 		i  = i + 1
 		ki = 1
 
-print(output_img.reshape((output_width,output_height)))
-print()
+#print(output_img.reshape((output_width,output_height)))
+#print()
 
 #---------------------------------------------------------------------------------
 # Computes the first linear interpolation
@@ -114,8 +119,8 @@ while (j < output_width):
 		j  = j + 1
 		kj = 1
 
-print(output_img.reshape((output_width,output_height)))
-print()
+#print(output_img.reshape((output_width,output_height)))
+#print()
 
 #---------------------------------------------------------------------------------
 # Computes the second linear (bilinear) interpolation
@@ -154,4 +159,9 @@ while (i < output_height):
 	#Continues to the next row
 	i = i + 1
 
-print(output_img.reshape((output_width,output_height)))
+output_image = Image.new(mode="L", size=(output_width, output_height))
+output_image.putdata(output_img.flatten())
+
+output_image.save(output_img_name)
+
+#print(output_img.reshape((output_width,output_height)))
