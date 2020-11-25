@@ -4,7 +4,7 @@ module INSTRUCTION_MEMORY #(parameter PATH = "")(CLK, PC, INSTRUCTION);
 	input               CLK;
 	output logic [31:0] INSTRUCTION;
 
-	logic [31:0] READ [0:127];
+	logic [31:0] READ [0:1];
 	
 	initial begin
 		$readmemh(PATH, READ);

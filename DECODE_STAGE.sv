@@ -1,8 +1,8 @@
 module DECODE_STAGE (CLK, INSTRUCTION, REG_UPDATE, REG_S_WRITE, REG_V_WRITE, WD3, WA3, R_UPDATE, PIPELINE_D);
 
 	input          CLK, REG_UPDATE, REG_S_WRITE, REG_V_WRITE;
-	input  [31:0]  INSTRUCTION;
-	input  [3:0]   WD3, WA3, R_UPDATE;
+	input  [31:0]  WD3, INSTRUCTION;
+	input  [3:0]   WA3, R_UPDATE;
 	output [188:0] PIPELINE_D;
 	
 	logic  [16:0]  W_CONTROL;
